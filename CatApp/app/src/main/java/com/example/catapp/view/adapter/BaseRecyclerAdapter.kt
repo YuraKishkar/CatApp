@@ -5,13 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(val onItemClick: BaseRecyclerAdapter.OnItemClickListener<T>) :
+abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick: (T, View, View, Int) -> Unit) :
     RecyclerView.Adapter<VH>() {
 
     private val items = arrayListOf<T>()
     protected abstract fun getLayoutResId(): Int
     private lateinit var mLayoutInflater: LayoutInflater
-    protected var mOnItemClickListener: BaseRecyclerAdapter.OnItemClickListener<T> = onItemClick
+    protected var mOnItemClickListener: (T, View, View, Int) -> Unit = onItemClick
 
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -40,7 +40,5 @@ abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(val onItemCl
 
     override fun getItemCount(): Int = items.size
 
-    interface OnItemClickListener<T> {
-        fun onClick(item: T, view: View)
-    }
+
 }

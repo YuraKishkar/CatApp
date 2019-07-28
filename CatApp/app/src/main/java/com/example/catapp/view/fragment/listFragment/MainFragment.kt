@@ -5,13 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catapp.App
 import com.example.catapp.R
 import com.example.catapp.presenter.MainPresenter
 import com.example.catapp.presenter.base.BasePresenter
 import com.example.catapp.presenter.base.interfaces.IBasePresenter
+import com.example.catapp.utils.ExpandCollapseViewUtil
 import com.example.catapp.view.adapter.CatsItemsAdapter
 import com.example.catapp.view.base.fragment.BaseFragment
 import com.example.catapp.view.interfaces.IMainFragmet
@@ -52,10 +56,43 @@ class MainFragment : BaseFragment(), IMainFragmet {
 
 
     private fun initRecyclerView() {
-        mRecyclerView.layoutManager = GridLayoutManager(context, 2)
+        mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setHasFixedSize(true)
-        mCatsItemsAdapter = CatsItemsAdapter({ onClick: CatsItemData -> })
+        mCatsItemsAdapter =
+            CatsItemsAdapter { item: CatsItemData, view: View, expandableView: View, position: Int ->
+                expandCollapse(
+                    expandableView,
+                    position
+                )
+            }
         mRecyclerView.adapter = mCatsItemsAdapter
+    }
+
+
+    private fun expandCollapse(expandable: View, position: Int) {
+        when (expandable.visibility) {
+            View.VISIBLE -> {
+                collapseView(expandable)
+                mCatsItemsAdapter.notifyItemChanged(position)
+            }
+            else -> {
+                expandView(expandable)
+                mCatsItemsAdapter.notifyItemChanged(position)
+            }
+        }
+
+    }
+
+    private fun collapseView(view: View) {
+        val rotate = RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        rotate.duration = ExpandCollapseViewUtil.ANIMATION_DURATION
+        ExpandCollapseViewUtil.collapseInLinearLayout(view)
+    }
+
+    private fun expandView(view: View) {
+        val rotate = RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        rotate.duration = ExpandCollapseViewUtil.ANIMATION_DURATION
+        ExpandCollapseViewUtil.expandInLinearLayout(view)
     }
 
 }
