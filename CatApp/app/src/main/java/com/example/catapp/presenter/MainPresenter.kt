@@ -5,6 +5,7 @@ import com.example.catapp.presenter.base.BasePresenter
 import com.example.catapp.view.base.interfaces.IBaseView
 import com.example.catapp.view.fragment.listFragment.CatsItemData
 import com.example.catapp.view.interfaces.IMainFragmet
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class MainPresenter @Inject constructor() : BasePresenter() {
@@ -21,7 +22,7 @@ class MainPresenter @Inject constructor() : BasePresenter() {
 
 
     @SuppressLint("CheckResult")
-    fun loadCatsData() {
+    private fun loadCatsData() {
         addCompositeDisposable(
             mIModel.getCats()
                 .map { list -> CatsItemData.MAP_TO_CATS_ITEM(list) }
@@ -33,6 +34,17 @@ class MainPresenter @Inject constructor() : BasePresenter() {
 
     }
 
+    fun addToFavouriteCat(cat: CatsItemData) {
+        addCompositeDisposable(
+            Observable.just(cat)
+                .map { CatsItemData.MAP_TO_FAVOURITE(it) }
+                .flatMapCompletable { mIModel.addFavouriteCat(it) }
+                .observeOn(mUIThread)
+                .subscribe({}, { mParentView.showError(it.message.toString()) })
+        )
+    }
 }
+
+
 
 

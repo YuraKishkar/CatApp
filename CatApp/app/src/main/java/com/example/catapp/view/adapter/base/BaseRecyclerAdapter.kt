@@ -1,17 +1,17 @@
-package com.example.catapp.view.adapter
+package com.example.catapp.view.adapter.base
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick: (T, View, View, Int) -> Unit) :
+abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick: (T, View, Int) -> Unit) :
     RecyclerView.Adapter<VH>() {
 
     private val items = arrayListOf<T>()
     protected abstract fun getLayoutResId(): Int
     private lateinit var mLayoutInflater: LayoutInflater
-    protected var mOnItemClickListener: (T, View, View, Int) -> Unit = onItemClick
+    protected var mOnItemClickListener: (T, View, Int) -> Unit = onItemClick
 
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -40,5 +40,11 @@ abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick:
 
     override fun getItemCount(): Int = items.size
 
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+//        val itemCount = itemCount - position
+        notifyItemRangeChanged(position, itemCount)
+    }
 
 }

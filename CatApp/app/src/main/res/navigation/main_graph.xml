@@ -5,5 +5,11 @@
             app:startDestination="@id/mainFragment">
 
     <fragment android:id="@+id/mainFragment" android:name="com.example.catapp.view.fragment.listFragment.MainFragment"
-              android:label="fragment_main" tools:layout="@layout/fragment_main"/>
+              android:label="fragment_main" tools:layout="@layout/fragment_main">
+        <action android:id="@+id/action_mainFragment_to_favouriteFragment" app:destination="@id/favouriteFragment"
+                app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"/>
+    </fragment>
+    <fragment android:id="@+id/favouriteFragment"
+              android:name="com.example.catapp.view.fragment.favouriteFragment.FavouriteFragment"
+              android:label="fragment_favourite" tools:layout="@layout/fragment_favourite"/>
 </navigation>
