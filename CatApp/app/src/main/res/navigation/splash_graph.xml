@@ -9,9 +9,8 @@
               android:label="fragment_splash"
               tools:layout="@layout/fragment_splash">
         <action android:id="@+id/action_splashFragment_to_mainActivity" app:destination="@id/mainActivity"
-                app:popUpTo="@id/splashFragment"
                 app:enterAnim="@anim/nav_default_enter_anim" app:exitAnim="@anim/nav_default_exit_anim"
-                app:popUpToInclusive="true"/>
+        />
     </fragment>
     <activity android:id="@+id/mainActivity" android:name="com.example.catapp.view.activity.MainActivity"
               android:label="activity_main" tools:layout="@layout/activity_main"/>

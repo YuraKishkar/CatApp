@@ -1,8 +1,10 @@
 package com.example.catapp.view.fragment.favouriteFragment
 
 
+import android.Manifest
 import android.os.Bundle
 import android.view.View
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.catapp.App
@@ -16,6 +18,7 @@ import javax.inject.Inject
 
 
 class FavouriteFragment : BaseFragment(), IFavouriteFragment {
+
 
     @Inject
     lateinit var mPresenter: FavouritePresenter
@@ -48,13 +51,18 @@ class FavouriteFragment : BaseFragment(), IFavouriteFragment {
     override fun showResults(list: List<FavouriteEntity>) {
         mCatsItemsFavouriteAdapter.insertAll(list)
     }
+
     private fun initRecyclerView() {
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setHasFixedSize(true)
         mCatsItemsFavouriteAdapter =
-            CatsFavouriteAdapter{ item: FavouriteEntity, view: View, position: Int ->
+            CatsFavouriteAdapter(onItemClickListener = { item: FavouriteEntity, view: View, position: Int ->
                 mPresenter.deleteFavouriteCat(item, position)
-            }
+            },
+                onItemDownloadClick = { item: FavouriteEntity, view: View, position: Int ->
+                    mPresenter.downloadImage(item.id, item.url)
+                }
+            )
         mRecyclerView.adapter = mCatsItemsFavouriteAdapter
 
     }
@@ -63,4 +71,5 @@ class FavouriteFragment : BaseFragment(), IFavouriteFragment {
     override fun updateUI(position: Int) {
         mCatsItemsFavouriteAdapter.removeItem(position)
     }
+
 }

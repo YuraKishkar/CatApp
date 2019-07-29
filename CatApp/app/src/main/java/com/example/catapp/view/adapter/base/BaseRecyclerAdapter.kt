@@ -3,16 +3,27 @@ package com.example.catapp.view.adapter.base
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.catapp.R
+import com.example.catapp.utils.extensions.expand
 
-abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick: (T, View, Int) -> Unit) :
+abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(
+    onItemClick: (T, View, Int) -> Unit,
+    onItemDownloadClick: (T, View, Int) -> Unit
+) :
     RecyclerView.Adapter<VH>() {
 
     private val items = arrayListOf<T>()
     protected abstract fun getLayoutResId(): Int
     private lateinit var mLayoutInflater: LayoutInflater
-    protected var mOnItemClickListener: (T, View, Int) -> Unit = onItemClick
 
+    protected var mOnItemClickListener: (T, View, Int) -> Unit = onItemClick
+    protected var mOnItemDownloadClick: (T, View, Int) -> Unit = onItemDownloadClick
+
+    init {
+        setHasStableIds(true)
+    }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -31,7 +42,16 @@ abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick:
         if (position >= 0 && position < items.size) items[position] else null
 
 
-    abstract override fun onBindViewHolder(holder: VH, position: Int)
+    override fun onBindViewHolder(holder: VH, position: Int) {
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
         viewHolder(mLayoutInflater.inflate(getLayoutResId(), parent, false), viewType)
@@ -48,3 +68,5 @@ abstract class BaseRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(onItemClick:
     }
 
 }
+
+

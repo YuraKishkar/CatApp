@@ -1,9 +1,13 @@
 package com.example.catapp.presenter.base
 
+import android.content.Context
+import android.widget.Toast
 import com.example.catapp.App
 import com.example.catapp.constants.Constants
 import com.example.catapp.model.IModel
 import com.example.catapp.presenter.base.interfaces.IBasePresenter
+import com.example.catapp.utils.helpers.ImageSaveHelper
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -18,7 +22,13 @@ abstract class BasePresenter : IBasePresenter {
     lateinit var mCompositeDisposable: CompositeDisposable
 
     @Inject
+    lateinit var mImageSaveHelper: ImageSaveHelper
+
+    @Inject
     protected lateinit var mIModel: IModel
+
+    @Inject
+    protected lateinit var mContext: Context
 
     @field:[Inject
     Named(Constants.UI_THREAD)]
@@ -40,5 +50,20 @@ abstract class BasePresenter : IBasePresenter {
     override fun onStop() {
         mCompositeDisposable.clear()
     }
+
+
+    fun downloadImage(id: String, url: String) {
+        addCompositeDisposable(
+            Observable.just(id)
+                .flatMap { mImageSaveHelper.downloadImage(it, url) }
+                .subscribeOn(mIOThread)
+                .observeOn(mUIThread)
+                .subscribe(
+                    { Toast.makeText(mContext, it, Toast.LENGTH_LONG).show() },
+                    { getBaseView().showError(it.message.toString()) })
+        )
+    }
+
+    override fun hasPermission(): Boolean = mImageSaveHelper.hasPermission()
 
 }

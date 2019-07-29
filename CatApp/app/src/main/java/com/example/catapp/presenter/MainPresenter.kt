@@ -20,6 +20,7 @@ class MainPresenter @Inject constructor() : BasePresenter() {
     override fun onStop() {
     }
 
+    override fun getBaseView(): IBaseView = mParentView
 
     @SuppressLint("CheckResult")
     private fun loadCatsData() {

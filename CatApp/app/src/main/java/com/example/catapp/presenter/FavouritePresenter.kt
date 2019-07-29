@@ -16,6 +16,9 @@ class FavouritePresenter @Inject constructor() : BasePresenter() {
     }
 
 
+    override fun getBaseView(): IBaseView = mParentView
+
+
     private fun loadFavouriteCats() {
         addCompositeDisposable(
             mIModel.getCatsFavourite()

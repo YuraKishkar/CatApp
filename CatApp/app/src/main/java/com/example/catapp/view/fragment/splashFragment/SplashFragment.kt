@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.example.catapp.R
 
 
-
 class SplashFragment : Fragment() {
 
     override fun onCreateView(
@@ -22,10 +21,11 @@ class SplashFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_splash, container, false)
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         findNavController().navigate(R.id.action_splashFragment_to_mainActivity)
+        activity?.finish()
     }
+
 
 }

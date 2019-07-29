@@ -1,11 +1,11 @@
-package com.example.catapp.utils
+package com.example.catapp.utils.helpers
 
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
 import android.widget.LinearLayout
 
-class ExpandCollapseViewUtil {
+class ExpandCollapseViewHelper {
     companion object {
         const val ANIMATION_DURATION = 250L
 
@@ -24,6 +24,7 @@ class ExpandCollapseViewUtil {
                     view.requestLayout()
                 }
             }
+            startAnimate(view,animation)
 
         }
 
@@ -40,7 +41,14 @@ class ExpandCollapseViewUtil {
                     }
                 }
             }
+            startAnimate(view,animation)
+
         }
 
+        private fun startAnimate(view: View, anim: Animation) {
+            view.startAnimation(anim)
+        }
     }
+
+
 }

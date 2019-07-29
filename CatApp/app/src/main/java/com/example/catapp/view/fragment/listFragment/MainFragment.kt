@@ -12,7 +12,7 @@ import com.example.catapp.App
 import com.example.catapp.R
 import com.example.catapp.presenter.MainPresenter
 import com.example.catapp.presenter.base.BasePresenter
-import com.example.catapp.utils.ExpandCollapseViewUtil
+import com.example.catapp.utils.helpers.ExpandCollapseViewHelper
 import com.example.catapp.view.adapter.CatsItemsAdapter
 import com.example.catapp.view.base.fragment.BaseFragment
 import com.example.catapp.view.interfaces.IMainFragmet
@@ -43,7 +43,7 @@ class MainFragment : BaseFragment(), IMainFragmet {
         mRecyclerView = view.findViewById(R.id.rv_cats)
         mFloatingActionButton = view.findViewById(R.id.fab_favourite)
         mFloatingActionButton.setOnClickListener {
-        findNavController().navigate(R.id.action_mainFragment_to_favouriteFragment)
+            findNavController().navigate(R.id.action_mainFragment_to_favouriteFragment)
         }
         initRecyclerView()
     }
@@ -62,37 +62,16 @@ class MainFragment : BaseFragment(), IMainFragmet {
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerView.setHasFixedSize(true)
         mCatsItemsAdapter =
-            CatsItemsAdapter { item: CatsItemData, view: View, position: Int ->
+            CatsItemsAdapter(onItemClickListener = { item: CatsItemData, view: View, position: Int ->
                 mPresener.addToFavouriteCat(item)
-            }
+            },
+                onItemDownloadClick = { item: CatsItemData, view: View, position: Int ->
+                    mPresener.downloadImage(
+                        item.id,
+                        item.url
+                    )
+                })
         mRecyclerView.adapter = mCatsItemsAdapter
-    }
-
-
-    private fun expandCollapse(expandable: View, position: Int) {
-        when (expandable.visibility) {
-            View.VISIBLE -> {
-                collapseView(expandable)
-                mCatsItemsAdapter.notifyItemChanged(position)
-            }
-            else -> {
-                expandView(expandable)
-                mCatsItemsAdapter.notifyItemChanged(position)
-            }
-        }
-
-    }
-
-    private fun collapseView(view: View) {
-        val rotate = RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotate.duration = ExpandCollapseViewUtil.ANIMATION_DURATION
-        ExpandCollapseViewUtil.collapseInLinearLayout(view)
-    }
-
-    private fun expandView(view: View) {
-        val rotate = RotateAnimation(180f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotate.duration = ExpandCollapseViewUtil.ANIMATION_DURATION
-        ExpandCollapseViewUtil.expandInLinearLayout(view)
     }
 
 }

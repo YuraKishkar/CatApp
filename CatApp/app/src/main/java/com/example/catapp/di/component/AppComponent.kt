@@ -8,6 +8,7 @@ import com.example.catapp.model.ModelImpl
 import com.example.catapp.presenter.FavouritePresenter
 import com.example.catapp.presenter.MainPresenter
 import com.example.catapp.presenter.base.BasePresenter
+import com.example.catapp.utils.helpers.ImageSaveHelper
 import com.example.catapp.view.fragment.favouriteFragment.FavouriteFragment
 import com.example.catapp.view.fragment.listFragment.MainFragment
 import dagger.Component
@@ -26,4 +27,7 @@ interface AppComponent {
     fun inject(favouriteFragment: FavouriteFragment)
     //Model
     fun inject(modelImpl: ModelImpl)
+
+    //Helpers
+    fun inject(imageSaveHelper: ImageSaveHelper)
 }
