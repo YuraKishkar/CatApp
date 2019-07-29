@@ -43,6 +43,7 @@ class CatsItemsAdapter(
             mBtnFavourite.setOnClickListener {
                 onItemClickListener(item, it, position)
                 it.isEnabled = false
+                mBtnFavourite.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_star_24dp, 0, 0, 0)
             }
 
             mBtnDownload.setOnClickListener {
