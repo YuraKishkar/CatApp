@@ -25,14 +25,14 @@ fun LinearLayout.expand(expandable: View, arrow: ImageView) {
             val animation = RotateAnimation(180F, 0F, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             animation.duration = ExpandCollapseViewHelper.ANIMATION_DURATION
             ExpandCollapseViewHelper.collapseInLinearLayout(expandable)
-            arrow.rotation = 180f
+            arrow.rotation = 90f
             arrow.startAnimation(animation)
         }
         else -> {
             val animation = RotateAnimation(180F, 0F, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             animation.duration = ExpandCollapseViewHelper.ANIMATION_DURATION
             ExpandCollapseViewHelper.expandInLinearLayout(expandable)
-            arrow.rotation = 90f
+            arrow.rotation = 270f
             arrow.startAnimation(animation)
         }
     }

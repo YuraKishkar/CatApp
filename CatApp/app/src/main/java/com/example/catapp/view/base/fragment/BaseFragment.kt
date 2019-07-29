@@ -1,17 +1,22 @@
 package com.example.catapp.view.base.fragment
 
 import android.Manifest
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.catapp.R
 import com.example.catapp.presenter.base.interfaces.IBasePresenter
+import com.example.catapp.utils.helpers.DialogHepler
 import com.example.catapp.utils.helpers.SnackBarHelper
 import com.example.catapp.view.base.interfaces.IBaseView
 import com.example.catapp.view.fragment.favouriteFragment.FavouriteFragment
+import com.example.catapp.view.interfaces.IEventActivityListener
 import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment : Fragment(), IBaseView {
@@ -22,7 +27,12 @@ abstract class BaseFragment : Fragment(), IBaseView {
 
     protected abstract fun getLayoutResId(): Int
     protected abstract fun getPresenter(): IBasePresenter
+    protected var mIEventActivityListener: IEventActivityListener? = null
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mIEventActivityListener = context as IEventActivityListener
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(getLayoutResId(), container, false)
@@ -40,9 +50,19 @@ abstract class BaseFragment : Fragment(), IBaseView {
         getPresenter().onStop()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        dismissProgressDialog()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mIEventActivityListener = null
+    }
+
     protected open fun onCreateView(view: View) {}
 
-    override fun showError(messsage: String) {
+    override fun showMessageSnack(messsage: String) {
         view?.let {
             context?.let { context ->
                 SnackBarHelper.showSnackBar(
@@ -53,7 +73,16 @@ abstract class BaseFragment : Fragment(), IBaseView {
                 )
             }
         }
-//        view?.let { Snackbar.make(it, messsage, Snackbar.LENGTH_LONG).show() }
+    }
+
+    override fun showProgressDialog() {
+        mIEventActivityListener?.showProgressDialog()
+
+    }
+
+    override fun dismissProgressDialog() {
+
+        mIEventActivityListener?.dismissProgressDialog()
     }
 
     private fun checkPermission() {

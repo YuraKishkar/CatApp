@@ -60,7 +60,7 @@ abstract class BasePresenter : IBasePresenter {
                 .observeOn(mUIThread)
                 .subscribe(
                     { Toast.makeText(mContext, it, Toast.LENGTH_LONG).show() },
-                    { getBaseView().showError(it.message.toString()) })
+                    { getBaseView().showMessageSnack(it.message.toString()) })
         )
     }
 

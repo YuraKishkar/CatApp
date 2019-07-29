@@ -56,8 +56,9 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
 
     //Moxy
-    kapt 'com.arello-mobile:moxy-compiler:1.5.5'
-    implementation 'com.arello-mobile:moxy-app-compat:1.5.5'
+    kapt "com.arello-mobile:moxy-compiler:$rootProject.moxy_version"
+    implementation "com.arello-mobile:moxy-android:$rootProject.moxy_version"
+    implementation "com.arello-mobile:moxy-app-compat:$rootProject.moxy_version"
 
     //Room
     implementation "androidx.room:room-runtime:$rootProject.room_version"

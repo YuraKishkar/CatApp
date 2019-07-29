@@ -8,6 +8,7 @@ import android.view.animation.RotateAnimation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.catapp.App
 import com.example.catapp.R
 import com.example.catapp.presenter.MainPresenter
@@ -29,6 +30,7 @@ class MainFragment : BaseFragment(), IMainFragmet {
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mCatsItemsAdapter: CatsItemsAdapter
     private lateinit var mFloatingActionButton: FloatingActionButton
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
 
     override fun getPresenter(): BasePresenter = mPresener
 
@@ -42,6 +44,11 @@ class MainFragment : BaseFragment(), IMainFragmet {
         super.onCreateView(view)
         mRecyclerView = view.findViewById(R.id.rv_cats)
         mFloatingActionButton = view.findViewById(R.id.fab_favourite)
+        mSwipeRefreshLayout = view.findViewById(R.id.sr_favourite)
+
+        mSwipeRefreshLayout.setOnRefreshListener {
+            mPresener.loadCatsData()
+        }
         mFloatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_favouriteFragment)
         }
@@ -50,10 +57,12 @@ class MainFragment : BaseFragment(), IMainFragmet {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mIEventActivityListener?.hideToolbar()
         mPresener.onCreate(this)
     }
 
     override fun showResults(listCats: List<CatsItemData>) {
+        mSwipeRefreshLayout.isRefreshing = false
         mCatsItemsAdapter.insertAll(listCats)
     }
 

@@ -20,18 +20,28 @@ class FavouritePresenter @Inject constructor() : BasePresenter() {
 
 
     private fun loadFavouriteCats() {
+        mParentView.showProgressDialog()
         addCompositeDisposable(
             mIModel.getCatsFavourite()
                 .observeOn(mUIThread)
-                .subscribe({ mParentView.showResults(it) }, { mParentView.showError(it.message.toString()) })
+                .subscribe({
+                    mParentView.dismissProgressDialog()
+                    mParentView.showResults(it)
+
+                }, { mParentView.showMessageSnack(it.message.toString()) })
         )
     }
 
     fun deleteFavouriteCat(cat: FavouriteEntity, position: Int) {
+        mParentView.showProgressDialog()
         addCompositeDisposable(
             mIModel.deleteaFavouriteCat(cat)
                 .observeOn(mUIThread)
-                .subscribe({mParentView.updateUI(position)}, { mParentView.showError(it.message.toString()) })
+                .subscribe({
+                    mParentView.dismissProgressDialog()
+                    mParentView.updateUI(position)
+
+                }, { mParentView.showMessageSnack(it.message.toString()) })
         )
     }
 }

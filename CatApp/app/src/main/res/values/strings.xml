@@ -6,4 +6,5 @@
     <string name="favourite_button">Add to favourite</string>
     <string name="delete_favourite_button">Delete</string>
     <string name="download_button">Download</string>
+    <string name="title_progress_dialog">Wait</string>
 </resources>

@@ -23,25 +23,33 @@ class MainPresenter @Inject constructor() : BasePresenter() {
     override fun getBaseView(): IBaseView = mParentView
 
     @SuppressLint("CheckResult")
-    private fun loadCatsData() {
+     fun loadCatsData() {
+        mParentView.showProgressDialog()
+
         addCompositeDisposable(
             mIModel.getCats()
                 .map { list -> CatsItemData.MAP_TO_CATS_ITEM(list) }
                 .observeOn(mUIThread)
-                .subscribe({ result -> mParentView.showResults(result) },
-                    { mParentView.showError(it.message.toString()) })
+                .subscribe({ result ->
+                    mParentView.dismissProgressDialog()
+                    mParentView.showResults(result)
+                },
+                    { mParentView.showMessageSnack(it.message.toString()) })
         )
 
 
     }
 
     fun addToFavouriteCat(cat: CatsItemData) {
+        mParentView.showProgressDialog()
         addCompositeDisposable(
             Observable.just(cat)
                 .map { CatsItemData.MAP_TO_FAVOURITE(it) }
                 .flatMapCompletable { mIModel.addFavouriteCat(it) }
                 .observeOn(mUIThread)
-                .subscribe({}, { mParentView.showError(it.message.toString()) })
+                .subscribe(
+                    { mParentView.dismissProgressDialog() },
+                    { mParentView.showMessageSnack(it.message.toString()) })
         )
     }
 }

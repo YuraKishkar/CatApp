@@ -44,7 +44,14 @@ class FavouriteFragment : BaseFragment(), IFavouriteFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        mIEventActivityListener?.showToolbar()
         mPresenter.onCreate(this)
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        mIEventActivityListener?.setTitle("Your favourite list")
     }
 
 

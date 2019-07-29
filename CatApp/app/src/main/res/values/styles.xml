@@ -12,4 +12,17 @@
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
+
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/colorSnack</item>
+        <item name="android:textColorPrimary">@color/colorSnack</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+
+
 </resources>
