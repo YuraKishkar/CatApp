@@ -80,4 +80,6 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigation_version"
 
+    //Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.4.0'
 }

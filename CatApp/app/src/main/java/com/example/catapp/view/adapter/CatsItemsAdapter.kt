@@ -5,13 +5,12 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.catapp.R
 import com.example.catapp.utils.extensions.expand
-import com.example.catapp.utils.extensions.loadImageFromUrl
+import com.example.catapp.utils.extensions.loadImageFromUrlWithShimmer
 import com.example.catapp.view.adapter.base.BaseRecyclerAdapter
 import com.example.catapp.view.fragment.listFragment.CatsItemData
+import com.facebook.shimmer.ShimmerFrameLayout
 
 class CatsItemsAdapter(
     onItemClickListener: (item: CatsItemData, view: View, position: Int) -> Unit,
@@ -26,17 +25,19 @@ class CatsItemsAdapter(
     ) :
         RecyclerView.ViewHolder(itemView) {
         private lateinit var item: CatsItemData
-        private val mImageView = itemView.findViewById<ImageView>(R.id.iv_cat)
+        val mImageView = itemView.findViewById<ImageView>(R.id.iv_cat)
         private val mLlArrow = itemView.findViewById<LinearLayout>(R.id.ll_arrow_title)
         private val mLlExpandable = itemView.findViewById<LinearLayout>(R.id.ll_expandable)
         private val mBtnFavourite = itemView.findViewById<Button>(R.id.btn_favourite)
         private val mIvArrow = itemView.findViewById<ImageView>(R.id.iv_arrow)
         private val mBtnDownload = itemView.findViewById<Button>(R.id.btn_download)
+        var mShimmerFrameLayout: ShimmerFrameLayout = itemView.findViewById(R.id.shimmer_iv)
 
 
         fun bind(item: CatsItemData, position: Int) {
             this.item = item
-            mImageView.loadImageFromUrl(itemView, item.url)
+            mImageView.loadImageFromUrlWithShimmer(itemView, item.url, mShimmerFrameLayout)
+
             mLlArrow.setOnClickListener {
                 mLlArrow.expand(mLlExpandable, mIvArrow)
             }
