@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.catapp.R
 import com.example.catapp.utils.helpers.ExpandCollapseViewHelper
 
 fun ImageView.loadImageFromUrl(itemView: View, url: String) {
@@ -14,10 +15,12 @@ fun ImageView.loadImageFromUrl(itemView: View, url: String) {
         .load(url)
         .apply {
             diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.ic_cloud_download_24dp)
             centerCrop()
-            into(this@loadImageFromUrl)
         }
+        .into(this)
 }
+
 
 fun LinearLayout.expand(expandable: View, arrow: ImageView) {
     when (expandable.visibility) {
